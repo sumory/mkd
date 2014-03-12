@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>mkd - markdown file viewer/editor</title>
+    <link href="favicon.ico" rel="icon" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tab.css">
+</head>
+<body>
+<div id="sidebar">
+    <ul>
+        <li class="root" id="project">
+            <img src="img/project.png"><span id="root_path"></span>
+
+            <div id="files">
+                <ul>
+                    <li><img src="img/ajax-loader.gif">Loading...
+                </ul>
+            </div>
+    </ul>
+</div>
+
+<div id="content">
+    <div id="page" class="fill-e">
+        <div class="project">
+            <div class="workspace fill-e">
+                <div class="header"></div>
+                <div class="editor" style="width:900px;">
+                    <!--<a class="move button">
+                        <span class="icon reverse plus">Add a tab</span>
+                    </a>-->
+                    <a class="sbtn left_move" href="#" style="display:none;width: 26px; height: 26px;"><span></span></a>
+
+                    <div class="tabs-box">
+                        <ul id='name-tabs' class="tabs"></ul>
+                    </div>
+                    <a class="sbtn right_move" href="#"
+                       style="display:none;width: 26px; height: 26px;"><span></span></a>
+
+                    <div id="code-tabs" class="code fill-s"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/external/jquery-1.8.2.min.js"></script>
+<script src="js/external/kibo.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="js/external/modernizr-2.0.6.js"></script>
+<script src="js/external/transformjs.1.0.beta.2.js"></script>
+
+<script src="js/ace/ace.js"></script>
+<script src="js/mousewheel.js"></script>
+<script src="js/index.js"></script>
+
+</body>
+</html>

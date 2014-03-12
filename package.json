@@ -1,0 +1,21 @@
+{
+  "name": "mkd",
+  "version": "0.0.1",
+  "description": "to view and edit markdown file.",
+  "main": "index.js",
+  "author": {
+    "name": "sumory.wu",
+    "email": "sumory.wu@gmail.com"
+  },
+  "bin": {
+    "mkd": "./index.js"
+  },
+  "repository": "https://github.com/sumory/mkd",
+  "license": "MIT",
+  "dependencies": {
+    "commander":"2.1.0",
+    "beauty":"0.0.7",
+    "express":"*",
+    "socket.io":"*"
+  }
+}
