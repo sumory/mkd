@@ -8,5 +8,4 @@ lib-cov/
 .lock-wscript
 build/
 logs
-public/js/main.js
 tmp/

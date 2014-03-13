@@ -1,12 +1,27 @@
 # mkd
 
-to view and edit markdown files.
+cli to view and edit markdown files. still under heavy development.
 
 
 ## Install
 
+```
+npm install -g mkd
+```
+
 
 ## Usage
+
+```
+Usage: mkd [command][options] 
+
+  Commands:
+
+    config
+    help [options]         help.
+    render [options]       render a markdown file.
+    server [options]       start a server to view and edit
+ ```
 
 
 
@@ -14,7 +29,7 @@ to view and edit markdown files.
 
 (The MIT License)
 
-Copyright (c) 2014 sumory.wu <sumory.wu@gmail.com>
+Copyright (c) 2014 sumory.wu &lt;sumory.wu@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

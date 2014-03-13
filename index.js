@@ -48,10 +48,20 @@ commander
 		console.info('mkd help tips.');
 	});
 
+commander
+	.command('render')
+	.description('render a markdown file.')
+	.option('-f, --file <string>', '')
+	.action(function(env) {
+		if(env.file){
+
+		}
+	});
+
 
 commander
 	.command('server')
-	.description('')
+	.description('start a server to view and edit')
 	.option('-d, --direcotry <string>')
 	.option('-p, --port <number>')
 	.action(function(env) {
