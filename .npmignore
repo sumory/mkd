@@ -8,3 +8,4 @@ lib-cov/
 build/
 test/
 logs
+tmp/

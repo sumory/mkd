@@ -5,7 +5,6 @@ var aceConfig = {
 };
 var cwd = "";
 var stateByPath = {};
-var saveFileCallbacks = {};
 var loadFileCallbacks = {};
 var openFilesTable = []; //所有打开的tab
 var aceEditors = {}; //所有aceEditors
@@ -46,6 +45,7 @@ socket.on('file', function(data) {
 	}
 	delete loadFileCallbacks[data.path];
 });
+
 
 function getElementByAttr(attr_path) {
 	var lis = document.getElementsByTagName("li");
@@ -102,8 +102,7 @@ function openFile(entry) {
 
 function newImgEditor(entry, index) {
 	var editor = $('<div class="code-editor"></div>');
-	var imagePath = document.location.protocol + "//" + document.location.hostname 
-	+ ':' + ((parseInt(document.location.port) || 80) + 1) + entry.path.replace(cwd,'');
+	var imagePath = document.location.protocol + "//" + document.location.hostname + ':' + ((parseInt(document.location.port) || 80) + 1) + entry.path.replace(cwd, '');
 	console.log(imagePath)
 	var image = $('<img/>');
 	image.attr('src', imagePath);
@@ -264,14 +263,16 @@ $(document).on("click", '#name-tabs li .close', function() {
 			button: [{
 				value: '保存并关闭',
 				callback: function() {
-					saveFile(index, function() {
-						closeTab(index)
+					saveFileWhenClose(index, function() {
+						console.log(index);
+						closeTab(index);
 					});
 				},
 				focus: true
 			}, {
 				value: '直接关闭不保存',
 				callback: function() {
+					console.log(index);
 					closeTab(index);
 				}
 			}, {
@@ -395,3 +396,79 @@ $(".tabs-box").mousewheel(function(event, delta, deltaX, deltaY) {
 	event.stopPropagation();
 	event.preventDefault();
 });
+
+
+//~====================================保存操作==================================
+var k = new Kibo();
+k.down(['ctrl s'], saveHandler);
+
+function saveHandler(e) {
+	e.preventDefault();
+	if (currentFile && currentFile.type === 'file') { //当前有打开‘文件类型’的文件
+		var index = currentFile.index;
+		saveFile(index, currentFile.path, aceEditors[index].editor.getValue(), function(err) {
+			var tabName = $("#name-tabs li[name-tab-index=" + index + "] .tab").text() || '';
+			if (err) {
+				art.dialog({
+					content: '保存文件[' + tabName.substring(1) + ']出错',
+					button: [{
+						value: '确定',
+						focus: true
+					}]
+				});
+			} else {
+				aceEditors[index].changed = false;
+				$("#name-tabs li[name-tab-index=" + index + "] .tab").text(tabName.substring(1));
+			}
+		});
+	}
+}
+
+function saveFileWhenClose(index, callback) {
+
+	var thisFile = undefined;
+	for (var i in openFilesTable) { //从打开的tab列表中选
+		if (openFilesTable[i].index == index) {
+			thisFile = openFilesTable[i];
+			break;
+		}
+	}
+
+	if (thisFile && thisFile.type === 'file') { //当前有打开‘文件类型’的文件
+		saveFile(index, thisFile.path, aceEditors[index].editor.getValue(), function(err) {
+			var tabName = $("#name-tabs li[name-tab-index=" + index + "] .tab").text() || '';
+			if (err) {
+				art.dialog({
+					content: '保存文件[' + tabName.substring(1) + ']出错',
+					button: [{
+						value: '确定',
+						focus: true
+					}]
+				});
+			} else {
+				aceEditors[index].changed = false;
+				$("#name-tabs li[name-tab-index=" + index + "] .tab").text(tabName.substring(1));
+
+				callback && callback();
+			}
+		});
+	}
+}
+
+//index为生成的唯一标识--时间戳
+function saveFile(index, path, content, callback) {
+	socket.emit('save', {
+		index: index,
+		path: path,
+		content: content
+	}, function(data) {
+		//console.dir(data);
+		if (data.result) { //保存成功
+			//console.log('保存文件[', data.path, ']成功');
+			callback && callback(null);
+		} else {
+			//console.log('保存文件[', data.path, ']失败');
+			callback && callback(true);//有错误发生
+		}
+	});
+};

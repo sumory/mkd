@@ -9,3 +9,4 @@ lib-cov/
 build/
 logs
 public/js/main.js
+tmp/
