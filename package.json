@@ -13,9 +13,10 @@
   "repository": "https://github.com/sumory/mkd",
   "license": "MIT",
   "dependencies": {
-    "commander":"2.1.0",
-    "beauty":"0.0.7",
-    "express":"*",
-    "socket.io":"*"
+    "commander": "2.1.0",
+    "beauty": "0.0.7",
+    "express": "3.4.8",
+    "socket.io": "0.9.16",
+    "marked": "0.3.2"
   }
 }
