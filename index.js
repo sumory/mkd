@@ -66,7 +66,7 @@ commander
 	.option('-p, --port <number>')
 	.action(function(env) {
 		var abs_path = path.resolve(process.cwd(), env.direcotry || '') || process.cwd();
-		var port = env.port || 8222;
+		var port = env.port || 8333;
 		console.info('mkd is running under Path[%s] on Port[%d]', abs_path, port);
 
 		if (fs.existsSync(abs_path)) {

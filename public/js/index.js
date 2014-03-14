@@ -165,8 +165,10 @@ function newFileEditor(entry, index) {
            
             var aceEditor = ace.edit(codeArea.attr('id'));
             aceEditors[index] = {
+                mode:mode,
                 editor: aceEditor,
-                changed: false
+                changed: false,
+                reRender:true //初始化后就已经渲染了，所以这里设为true
             };
             aceEditor.setTheme("ace/theme/clouds");
             aceEditor.focus();
@@ -178,6 +180,7 @@ function newFileEditor(entry, index) {
             aceEditor.setShowPrintMargin(aceConfig.showPrintMargin);
             aceEditor.on('change', function() {
                 aceEditors[index].changed = true; //标记已修改
+                 aceEditors[index].reRender = false;
                 $("#name-tabs li[name-tab-index=" + index + "] .tab").text("*" + entry.name);
             });
 
@@ -431,6 +434,7 @@ $(".tabs-box").mousewheel(function(event, delta, deltaX, deltaY) {
 //~====================================保存操作==================================
 var k = new Kibo();
 k.down(['ctrl s'], saveHandler);
+k.down(['command s'], saveHandler);
 
 function saveHandler(e) {
     e.preventDefault();
@@ -502,3 +506,15 @@ function saveFile(index, path, content, callback) {
         }
     });
 };
+
+setInterval(function(){
+    if (currentFile && currentFile.type === 'file') { //当前有打开‘文件类型’的文件
+        var index = currentFile.index;
+        if(aceEditors[index].mode==='markdown' && !aceEditors[index].reRender){
+            var content = aceEditors[index].editor.getValue();
+            var rendered = marked(content);
+            $('#render-area-'+index).html(rendered);
+            aceEditors[index].reRender = true;
+        }
+    }
+},2000);
