@@ -432,12 +432,12 @@ $(".tabs-box").mousewheel(function(event, delta, deltaX, deltaY) {
 
 
 //~====================================保存操作==================================
-var k = new Kibo();
-k.down(['ctrl s'], saveHandler);
-k.down(['command s'], saveHandler);
 
-function saveHandler(e) {
-    e.preventDefault();
+
+jwerty.key('⌘+s', saveHandler);
+jwerty.key('ctrl+s', saveHandler);
+
+function saveHandler() {
     if (currentFile && currentFile.type === 'file') { //当前有打开‘文件类型’的文件
         var index = currentFile.index;
         saveFile(index, currentFile.path, aceEditors[index].editor.getValue(), function(err) {
@@ -507,7 +507,7 @@ function saveFile(index, path, content, callback) {
     });
 };
 
-setInterval(function(){
+setInterval(function(){//当前显示的markdown文档内容有变化时，自动渲染
     if (currentFile && currentFile.type === 'file') { //当前有打开‘文件类型’的文件
         var index = currentFile.index;
         if(aceEditors[index].mode==='markdown' && !aceEditors[index].reRender){
