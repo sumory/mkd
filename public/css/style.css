@@ -91,6 +91,14 @@ h1, h2, h3, h4, h5, h6 {
 	background: url('../img/right-arrow.png') 6px 4px no-repeat;
 }
 
+#sidebar li.folder img{
+		width:16px;
+}
+
+#sidebar li.file img{
+		width:16px;
+}
+
 #sidebar li.folder > ul {
 	display: none;
 }

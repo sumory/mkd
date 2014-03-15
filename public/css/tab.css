@@ -200,13 +200,6 @@ textarea.code, code, pre, div.area {
     overflow: hidden;
 }
 
-.area a {
-    position: relative;
-    text-align:center;
-    top: 100px;
-    display: block;
-}
-
 .editor .area.active {
     z-index: 0;
 }

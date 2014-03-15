@@ -12,16 +12,30 @@ npm install -g mkd
 
 ## Usage
 
+[English](./README.md) [中文](./README.zh.md)  
+
 ```
 Usage: mkd [command][options] 
 
   Commands:
 
-    config
-    help [options]         help.
+    help [options]         help tips.
     render [options]       render a markdown file.
-    server [options]       start a server to view and edit
+    server [options]       start a server to view and edit files.
+    
+  Demos:
+  
+    mkd server                             start a server at current directory.
+    mkd server -d /data/mk -p 8888         start server at directory '/data/mk' on port 8888.
+    mkd render -f abc.md                   render file 'abc.md' and output result to console.
+    mkd render -f /mk/abc.md -o            render file 'abc.md' and output result to 'abc.html'.
+    mkd render -f /mk/abc.md -o cbd.html   render file 'abc.md' and output result to 'cba.html'.
  ```
+
+
+
+![](https://raw.github.com/sumory/mkd/master/assets/server.png)
+
 
 
 

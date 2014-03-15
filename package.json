@@ -1,6 +1,6 @@
 {
   "name": "mkd",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "to view and edit markdown file.",
   "main": "index.js",
   "author": {
