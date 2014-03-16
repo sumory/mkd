@@ -17,6 +17,26 @@
 .header {
     padding: 10px 10px 10px 15px;
     height: 20px;
+    float:left;
+    width:100%;
+}
+
+.header .split_op{
+    float:right;
+    width:80px;
+    height:20px;
+}
+
+.header .split_op a{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+.header .split_op a img:hover{
+    -moz-opacity:0.68 !important; 
+    filter:alpha(opacity=68);
+    opacity: 0.68;
 }
 
 /**

@@ -16,11 +16,13 @@ marked.setOptions({//marked基本配置，前后端通用
 });
 
 var cwd = "";
+var splitState = 'center';
 var stateByPath = {};
 var loadFileCallbacks = {};
 var openFilesTable = []; //所有打开的tab
 var aceEditors = {}; //所有aceEditors
 var currentFile = {};
+
 
 var socket = io.connect(window.location.origin, {
     'connect timeout': 20000
@@ -122,7 +124,7 @@ function newImgEditor(entry, index) {
     var a = $('<a href="' + imagePath + '" target="_blank"></a>');
     a.append(image);
     editor.append(a);
-    $('#code-tabs').append('<div code-tab-index="' + index + '" class="area stylesheet-style-mss">' + editor.html() + '</div>');
+    $('#code-tabs').append('<div data-file-mode="img" code-tab-index="' + index + '" class="area stylesheet-style-mss">' + editor.html() + '</div>');
     showTab(index);
 }
 
@@ -144,21 +146,18 @@ function newFileEditor(entry, index) {
             if(mode==='markdown'){//如果是Markdown文件，需要分左右两栏，右栏显示实时渲染
                 codeArea.attr('style', "position: absolute;top: 0px;margin: 0;bottom: 0;left: 0;right: 50%;border-top: none;");
                 editor.append(codeArea);
-                var rendered = marked(file);
-                var renderedArea1 = $('<div></div>').attr("id", 'render-area-' + index)
-                .attr('style', "position: absolute;top: 0px;margin: 0;bottom: 0;left: 50%;right: 0;border-top: none;")
-                .html(rendered);
 
+                var rendered = marked(file);
                 var renderedArea = '<div  class="markdown-body entry-content" id="render-area-' + index+'" style="'+"overflow: auto;position: absolute;top: 0px;margin: 0;bottom: 0;left: 50%;right: 0;border-top: none;" +'" >'+rendered+'</div>';
           
  
-                $('#code-tabs').append('<div code-tab-index="' + index + '" class="area">' +
+                $('#code-tabs').append('<div data-file-mode="'+ mode +'" code-tab-index="' + index + '" class="area">' +
                  editor.html() + renderedArea+'</div>');
             }
             else{
                 codeArea.attr('style', "position: absolute;top: 0px;margin: 0;bottom: 0;left: 0;right: 0;border-top: none;");
                 editor.append(codeArea);
-                $('#code-tabs').append('<div code-tab-index="' + index + '" class="area">' + editor.html() + '</div>');
+                $('#code-tabs').append('<div data-file-mode="'+ mode +'"code-tab-index="' + index + '" class="area">' + editor.html() + '</div>');
             }
                 
             
@@ -183,6 +182,14 @@ function newFileEditor(entry, index) {
                  aceEditors[index].reRender = false;
                 $("#name-tabs li[name-tab-index=" + index + "] .tab").text("*" + entry.name);
             });
+
+            if(splitState=='left'){
+                $("#split_op_left").click();
+            }else if(splitState=='right'){
+                $("#split_op_right").click();
+            }else{
+                $("#split_op_center").click();
+            }
 
             showTab(index);
         }
@@ -389,7 +396,7 @@ function showTab(index) {
     for (var i in openFilesTable) { //从打开的tab列表中删除该项
         if (openFilesTable[i].index == index) { //即当前打开的tab
             currentFile = openFilesTable[i];
-            $('.header').text('当前文件: ' + i);
+            $('#current_file_name').text('当前文件: ' + i);
             break;
         }
     }
@@ -506,6 +513,40 @@ function saveFile(index, path, content, callback) {
         }
     });
 };
+
+//~====================================markdown 预览文件与源文件分割符操作==================================
+
+$(document).ready(function(){ 
+   $("#split_op_left").on("click", function(){
+        splitState ='left';
+        $("div[data-file-mode='markdown'] .ace_editor").each(function(){
+            $(this).css('right','100%');
+            $("div[data-file-mode='markdown'] .markdown-body").each(function(){
+                $(this).css('left',0);
+            });
+        });
+   });
+   $("#split_op_center").on("click", function(){
+        splitState ='center';
+        $("div[data-file-mode='markdown'] .ace_editor").each(function(){
+            $(this).css('right','50%');
+            $("div[data-file-mode='markdown'] .markdown-body").each(function(){
+                $(this).css('left',"50%");
+            });
+        });
+   });
+   $("#split_op_right").on("click", function(){
+        splitState ='right';
+        $("div[data-file-mode='markdown'] .ace_editor").each(function(){
+            $(this).css('right',0);
+            $("div[data-file-mode='markdown'] .markdown-body").each(function(){
+                $(this).css('left',"100%");
+            });
+        });
+   });
+}); 
+
+
 
 setInterval(function(){//当前显示的markdown文档内容有变化时，自动渲染
     if (currentFile && currentFile.type === 'file') { //当前有打开‘文件类型’的文件
