@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="css/tab.css">
     <link rel="stylesheet" href="css/artDialog/simple.css">
     <link rel="stylesheet" href="css/marked.css">
+    <style>
+        #category{
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            border: 1px dotted #CCC;
+            padding: 10px;
+            line-height:20px;
+            display:none;
+        }
+        #category a{
+            color:#005580;
+        }
+    </style>
 </head>
 <body>
 <div id="sidebar">
@@ -28,6 +43,7 @@
             <div class="workspace fill-e">
                 <div class="header">
                     <span id="current_file_name"></span>
+                    <div id="category"></div>
                     <div class="split_op">
                         <a id="split_op_left" href="javascript:void(0)"><img src="img/left_op.png" width="16px"></a>
                         <a id="split_op_center" href="javascript:void(0)"><img src="img/center_op.png" width="16px"></a>

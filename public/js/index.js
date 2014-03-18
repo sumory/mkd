@@ -400,6 +400,14 @@ function showTab(index) {
             break;
         }
     }
+
+    //控制markdown渲染目录显示与否
+    if(currentFile.name.indexOf('md')!=-1 || currentFile.name.indexOf('markdown')!=-1){
+        $('#category').show();
+    }
+    else{
+        $('#category').hide();
+    }
 }
 
 function hscroll() {
@@ -549,13 +557,37 @@ $(document).ready(function(){
 
 
 setInterval(function(){//当前显示的markdown文档内容有变化时，自动渲染
+    
+
+
+        
+
     if (currentFile && currentFile.type === 'file') { //当前有打开‘文件类型’的文件
         var index = currentFile.index;
-        if(aceEditors[index].mode==='markdown' && !aceEditors[index].reRender){
+
+        //生成目录
+        $("#category").empty();
+        $("#render-area-"+ index).find("h1,h2,h3,h4,h5,h6").each(function(i,item){
+            var tag = $(item).get(0).localName;
+            $(item).attr("id","wow"+i);
+            $("#category").append('<a class="new'+tag+'" href="#wow'+i+'">'+$(this).text()+'</a></br>');
+            $(".newh1").css("margin-left",0);
+            $(".newh2").css("margin-left",10);
+            $(".newh3").css("margin-left",20);
+            $(".newh4").css("margin-left",30);
+            $(".newh5").css("margin-left",40);
+            $(".newh6").css("margin-left",50);
+            
+        });
+
+
+        if(index && aceEditors[index] && aceEditors[index].mode==='markdown' && !aceEditors[index].reRender){
             var content = aceEditors[index].editor.getValue();
             var rendered = marked(content);
             $('#render-area-'+index).html(rendered);
             aceEditors[index].reRender = true;
+
+            
         }
     }
 },2000);
